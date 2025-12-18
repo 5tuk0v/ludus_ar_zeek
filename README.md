@@ -10,8 +10,9 @@ Available variables are listed below, along with default values (see `defaults/m
 ludus_ar_zeek_splunk_uf_url: https://download.splunk.com/products/universalforwarder/releases/9.3.0/linux/splunkforwarder-9.3.0-51ccf43db5bd-linux-2.6-amd64.deb
 ludus_ar_zeek_splunk_password: changeme123!
 ludus_ar_zeek_splunk_ip: "10.2.20.1"
-ludus_ar_zeek_interface: "ens18"
 ```
+
+**Note:** The network interface for Zeek is automatically detected at runtime. The role uses `ansible_default_ipv4.interface` to identify the primary network interface (the one with the default IPv4 route). This eliminates the need to manually specify the interface name.
 
 ## Dependencies
 

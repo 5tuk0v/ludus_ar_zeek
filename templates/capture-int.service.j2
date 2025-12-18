@@ -4,7 +4,7 @@ After=network-online.target
 
 [Service]
 Type=oneshot
-ExecStart=/sbin/ip link set {{ ludus_ar_zeek_interface }} promisc on
+ExecStart=/sbin/ip link set {{ detected_interface }} promisc on
 TimeoutStartSec=0
 RemainAfterExit=yes
 

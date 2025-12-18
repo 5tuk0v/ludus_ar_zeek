@@ -1,5 +1,13 @@
 ---
-- name: install /etc/systemd/system/capture-int.service to set {{ ludus_ar_zeek_interface }} settings at boot
+- name: Detect the primary network interface
+  set_fact:
+    detected_interface: "{{ ansible_default_ipv4.interface | default(ansible_interfaces | reject('match', '^lo') | reject('match', '^docker') | reject('match', '^br-') | list | first) }}"
+
+- name: Display detected interface
+  debug:
+    msg: "Detected network interface: {{ detected_interface }}"
+
+- name: install /etc/systemd/system/capture-int.service to set {{ detected_interface }} settings at boot
   become: true
   template:
     src: capture-int.service.j2
@@ -77,12 +85,12 @@
     path: '/opt/zeek/share/zeek/scripts'
     state: directory
 
-- name: Change Interface from eth0 to {{ ludus_ar_zeek_interface }}
+- name: Change Interface from eth0 to {{ detected_interface }}
   become: true
   replace:
     path: /opt/zeek/etc/node.cfg
     regexp: 'eth0'
-    replace: "{{ ludus_ar_zeek_interface }}"
+    replace: "{{ detected_interface }}"
 
 
 ####################################################################
